@@ -18,10 +18,10 @@ use Cake\Mailer\AbstractTransport;
 use Cake\Mailer\Email;
 use GuzzleHttp\Client;
 use Ivory\HttpAdapter\Guzzle6HttpAdapter;
-use SparkPost\SparkPost;
 use SparkPostEmail\Mailer\Exception\MissingCredentialsException;
 use SparkPostEmail\Mailer\Exception\MissingRequiredFieldException;
 use SparkPostEmail\Mailer\Exception\SparkPostApiException;
+use SparkPost\SparkPost;
 
 /**
  * SparkPost Transport class
