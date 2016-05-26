@@ -186,6 +186,12 @@ class SparkPostTransport extends AbstractTransport
         return $this->_cakeEmail->getHeaders(['_headers']);
     }
 
+    /**
+     * Process email parameters
+     *
+     * @throws MissingRequiredFieldException
+     * @return void
+     */
     protected function _processEmailAddresses()
     {
         $from = $this->_cakeEmail->from();
@@ -235,6 +241,7 @@ class SparkPostTransport extends AbstractTransport
      * Sets SparkPost object
      *
      * @throws MissingCredentialsException If API key is missing
+     * @return void
      */
     protected function _setSpObject()
     {
