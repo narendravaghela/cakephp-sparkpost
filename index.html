@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>CakePHP SparkPost by narendravaghela</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">CakePHP SparkPost</h1>
+      <h2 class="project-tagline">SparkPost plugin for CakePHP 3</h2>
+      <a href="https://github.com/narendravaghela/cakephp-sparkpost" class="btn">View on GitHub</a>
+      <a href="https://github.com/narendravaghela/cakephp-sparkpost/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/narendravaghela/cakephp-sparkpost/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="sparkpost-plugin-for-cakephp" class="anchor" href="#sparkpost-plugin-for-cakephp" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>SparkPost plugin for CakePHP</h1>
+
+<p><a href="https://travis-ci.org/narendravaghela/cakephp-sparkpost"><img src="https://travis-ci.org/narendravaghela/cakephp-sparkpost.svg?branch=master" alt="Build Status"></a>
+<a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square" alt="Software License"></a></p>
+
+<p>This plugin provides email delivery using <a href="https://www.sparkpost.com/">SparkPost</a>.</p>
+
+<h2>
+<a id="requirements" class="anchor" href="#requirements" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Requirements</h2>
+
+<p>This plugin has the following requirements:</p>
+
+<ul>
+<li>CakePHP 3.0.0 or greater.</li>
+<li>PHP 5.4.16 or greater.</li>
+</ul>
+
+<h2>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation</h2>
+
+<p>You can install this plugin into your CakePHP application using <a href="http://getcomposer.org">composer</a>.</p>
+
+<pre><code>composer require narendravaghela/cakephp-sparkpost
+</code></pre>
+
+<p>After installation, <a href="http://book.cakephp.org/3.0/en/plugins.html#loading-a-plugin">Load the plugin</a></p>
+
+<div class="highlight highlight-text-html-php"><pre><span class="pl-s1"><span class="pl-c1">Plugin</span><span class="pl-k">::</span>load(<span class="pl-s"><span class="pl-pds">'</span>SparkPostEmail<span class="pl-pds">'</span></span>);</span></pre></div>
+
+<p>Or, you can load the plugin using the shell command</p>
+
+<div class="highlight highlight-source-shell"><pre>$ bin/cake plugin load SparkPostEmail</pre></div>
+
+<h2>
+<a id="setup" class="anchor" href="#setup" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Setup</h2>
+
+<p>Set your SparkPost credentials in <code>EmailTransport</code> settings in app.php</p>
+
+<div class="highlight highlight-text-html-php"><pre><span class="pl-s1"><span class="pl-s"><span class="pl-pds">'</span>EmailTransport<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> [</span>
+<span class="pl-s1"><span class="pl-k">...</span></span>
+<span class="pl-s1">  <span class="pl-s"><span class="pl-pds">'</span>sparkpost<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> [</span>
+<span class="pl-s1">      <span class="pl-s"><span class="pl-pds">'</span>className<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>SparkPostEmail.SparkPost<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">      <span class="pl-s"><span class="pl-pds">'</span>apiKey<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>123456789123456789<span class="pl-pds">'</span></span> <span class="pl-c">// your api key</span></span>
+<span class="pl-s1">  ]</span>
+<span class="pl-s1">]</span></pre></div>
+
+<p>And create new delivery profile for sparkpost in <code>Email</code> settings.</p>
+
+<div class="highlight highlight-text-html-php"><pre><span class="pl-s1"><span class="pl-s"><span class="pl-pds">'</span>Email<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> [</span>
+<span class="pl-s1">    <span class="pl-s"><span class="pl-pds">'</span>default<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> [</span>
+<span class="pl-s1">        <span class="pl-s"><span class="pl-pds">'</span>transport<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>default<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">        <span class="pl-s"><span class="pl-pds">'</span>from<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>you@localhost<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">        <span class="pl-c">//'charset' =&gt; 'utf-8',</span></span>
+<span class="pl-s1">        <span class="pl-c">//'headerCharset' =&gt; 'utf-8',</span></span>
+<span class="pl-s1">    ],</span>
+<span class="pl-s1">    <span class="pl-s"><span class="pl-pds">'</span>sparkpost<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> [</span>
+<span class="pl-s1">        <span class="pl-s"><span class="pl-pds">'</span>transport<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>sparkpost<span class="pl-pds">'</span></span></span>
+<span class="pl-s1">    ]</span>
+<span class="pl-s1">]</span></pre></div>
+
+<h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h2>
+
+<p>You can now simply use the CakePHP <code>Email</code> to send an email via SparkPost.</p>
+
+<div class="highlight highlight-text-html-php"><pre><span class="pl-s1"><span class="pl-smi">$email</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-c1">Email</span>(<span class="pl-s"><span class="pl-pds">'</span>sparkpost<span class="pl-pds">'</span></span>);</span>
+<span class="pl-s1"><span class="pl-smi">$result</span> <span class="pl-k">=</span> <span class="pl-smi">$email</span><span class="pl-k">-&gt;</span>from([<span class="pl-s"><span class="pl-pds">'</span>foo@example.com<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>Example Site<span class="pl-pds">'</span></span>])</span>
+<span class="pl-s1">  <span class="pl-k">-&gt;</span>to(<span class="pl-s"><span class="pl-pds">'</span>bar@example.com<span class="pl-pds">'</span></span>)</span>
+<span class="pl-s1">  <span class="pl-k">-&gt;</span>subject(<span class="pl-s"><span class="pl-pds">'</span>Welcome to CakePHP<span class="pl-pds">'</span></span>)</span>
+<span class="pl-s1">  <span class="pl-k">-&gt;</span>template(<span class="pl-s"><span class="pl-pds">'</span>welcome<span class="pl-pds">'</span></span>)</span>
+<span class="pl-s1">  <span class="pl-k">-&gt;</span>viewVars([<span class="pl-s"><span class="pl-pds">'</span>foo<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>Bar<span class="pl-pds">'</span></span>])</span>
+<span class="pl-s1">  <span class="pl-k">-&gt;</span>emailFormat(<span class="pl-s"><span class="pl-pds">'</span>both<span class="pl-pds">'</span></span>)</span>
+<span class="pl-s1">  <span class="pl-k">-&gt;</span>attachments([</span>
+<span class="pl-s1">      <span class="pl-s"><span class="pl-pds">'</span>cake_icon1.png<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-c1">Configure</span><span class="pl-k">::</span>read(<span class="pl-s"><span class="pl-pds">'</span>App.imageBaseUrl<span class="pl-pds">'</span></span>) <span class="pl-k">.</span> <span class="pl-s"><span class="pl-pds">'</span>cake.icon.png<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">      <span class="pl-s"><span class="pl-pds">'</span>cake_icon2.png<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> [<span class="pl-s"><span class="pl-pds">'</span>file<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-c1">Configure</span><span class="pl-k">::</span>read(<span class="pl-s"><span class="pl-pds">'</span>App.imageBaseUrl<span class="pl-pds">'</span></span>) <span class="pl-k">.</span> <span class="pl-s"><span class="pl-pds">'</span>cake.icon.png<span class="pl-pds">'</span></span>],</span>
+<span class="pl-s1">      <span class="pl-c1">WWW_ROOT</span> <span class="pl-k">.</span> <span class="pl-s"><span class="pl-pds">'</span>favicon.ico<span class="pl-pds">'</span></span></span>
+<span class="pl-s1">  ])</span>
+<span class="pl-s1">  <span class="pl-k">-&gt;</span>send(<span class="pl-s"><span class="pl-pds">'</span>Your email content here<span class="pl-pds">'</span></span>);</span></pre></div>
+
+<p>You can also set custom headers using <code>ch:</code> prefix.</p>
+
+<div class="highlight highlight-text-html-php"><pre><span class="pl-s1"><span class="pl-smi">$email</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-c1">Email</span>(<span class="pl-s"><span class="pl-pds">'</span>sparkpost<span class="pl-pds">'</span></span>);</span>
+<span class="pl-s1"><span class="pl-smi">$result</span> <span class="pl-k">=</span> <span class="pl-smi">$email</span><span class="pl-k">-&gt;</span>from([<span class="pl-s"><span class="pl-pds">'</span>foo@example.com<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>Example Site<span class="pl-pds">'</span></span>])</span>
+<span class="pl-s1">  <span class="pl-k">-&gt;</span>to(<span class="pl-s"><span class="pl-pds">'</span>bar@example.com<span class="pl-pds">'</span></span>)</span>
+<span class="pl-s1">  <span class="pl-k">-&gt;</span>addHeaders([<span class="pl-s"><span class="pl-pds">'</span>ch:My-Custom-Header<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>Awesome header string<span class="pl-pds">'</span></span>])</span>
+<span class="pl-s1">  <span class="pl-k">-&gt;</span>addHeaders([<span class="pl-s"><span class="pl-pds">'</span>ch:Another-Custom-Header<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>Awesome header string<span class="pl-pds">'</span></span>])</span>
+<span class="pl-s1">  <span class="pl-k">-&gt;</span>emailFormat(<span class="pl-s"><span class="pl-pds">'</span>both<span class="pl-pds">'</span></span>)</span>
+<span class="pl-s1">  <span class="pl-k">-&gt;</span>attachments([</span>
+<span class="pl-s1">      <span class="pl-s"><span class="pl-pds">'</span>cake_icon1.png<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-c1">Configure</span><span class="pl-k">::</span>read(<span class="pl-s"><span class="pl-pds">'</span>App.imageBaseUrl<span class="pl-pds">'</span></span>) <span class="pl-k">.</span> <span class="pl-s"><span class="pl-pds">'</span>cake.icon.png<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">      <span class="pl-s"><span class="pl-pds">'</span>cake_icon2.png<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> [<span class="pl-s"><span class="pl-pds">'</span>file<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-c1">Configure</span><span class="pl-k">::</span>read(<span class="pl-s"><span class="pl-pds">'</span>App.imageBaseUrl<span class="pl-pds">'</span></span>) <span class="pl-k">.</span> <span class="pl-s"><span class="pl-pds">'</span>cake.icon.png<span class="pl-pds">'</span></span>],</span>
+<span class="pl-s1">      <span class="pl-c1">WWW_ROOT</span> <span class="pl-k">.</span> <span class="pl-s"><span class="pl-pds">'</span>favicon.ico<span class="pl-pds">'</span></span></span>
+<span class="pl-s1">  ])</span>
+<span class="pl-s1">  <span class="pl-k">-&gt;</span>send(<span class="pl-s"><span class="pl-pds">'</span>Your email content here<span class="pl-pds">'</span></span>);</span></pre></div>
+
+<p>You can set other custom parameters which SparkPost supports using <code>co:</code> prefix.</p>
+
+<div class="highlight highlight-text-html-php"><pre><span class="pl-s1"><span class="pl-smi">$email</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-c1">Email</span>(<span class="pl-s"><span class="pl-pds">'</span>sparkpost<span class="pl-pds">'</span></span>);</span>
+<span class="pl-s1"><span class="pl-smi">$result</span> <span class="pl-k">=</span> <span class="pl-smi">$email</span><span class="pl-k">-&gt;</span>from([<span class="pl-s"><span class="pl-pds">'</span>foo@example.com<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>Example Site<span class="pl-pds">'</span></span>])</span>
+<span class="pl-s1">  <span class="pl-k">-&gt;</span>to(<span class="pl-s"><span class="pl-pds">'</span>bar@example.com<span class="pl-pds">'</span></span>)</span>
+<span class="pl-s1">  <span class="pl-k">-&gt;</span>emailFormat(<span class="pl-s"><span class="pl-pds">'</span>both<span class="pl-pds">'</span></span>)</span>
+<span class="pl-s1">  <span class="pl-k">-&gt;</span>addHeaders([<span class="pl-s"><span class="pl-pds">'</span>ch:My-Custom-Header<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>Awesome header string<span class="pl-pds">'</span></span>])</span>
+<span class="pl-s1">  <span class="pl-k">-&gt;</span>addHeaders([<span class="pl-s"><span class="pl-pds">'</span>co:open_tracking<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-c1">true</span>])</span>
+<span class="pl-s1">  <span class="pl-k">-&gt;</span>addHeaders([<span class="pl-s"><span class="pl-pds">'</span>co:click_tracking<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-c1">true</span>])</span>
+<span class="pl-s1">  <span class="pl-k">-&gt;</span>addHeaders([<span class="pl-s"><span class="pl-pds">'</span>co:transactional<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-c1">true</span>])</span>
+<span class="pl-s1">  <span class="pl-k">-&gt;</span>addHeaders([<span class="pl-s"><span class="pl-pds">'</span>co:metadata<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> [<span class="pl-s"><span class="pl-pds">'</span>meta1<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>value1<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>meta2<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>value2<span class="pl-pds">'</span></span>]])</span>
+<span class="pl-s1">  <span class="pl-k">-&gt;</span>send(<span class="pl-s"><span class="pl-pds">'</span>Your email content here<span class="pl-pds">'</span></span>);</span></pre></div>
+
+<p>That is it.</p>
+
+<h2>
+<a id="reporting-issues" class="anchor" href="#reporting-issues" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Reporting Issues</h2>
+
+<p>If you have a problem with this plugin or any bug, please open an issue on <a href="https://github.com/narendravaghela/cakephp-sparkpost/issues">GitHub</a>.</p>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/narendravaghela/cakephp-sparkpost">CakePHP SparkPost</a> is maintained by <a href="https://github.com/narendravaghela">narendravaghela</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
