@@ -30,5 +30,48 @@ class SparkPostTransportTest extends TestCase
     {
         parent::setUp();
         $this->SparkPostTransport = new SparkPostTransport();
+        $this->validConfig = [
+            'apiKey' => 'a-valid-api-key'
+        ];
+        $this->invalidConfig = [
+            'apiKey' => ''
+        ];
+    }
+
+    /**
+     * Test configuration
+     *
+     * @return void
+     */
+    public function testInvalidConfig()
+    {
+        $this->setExpectedException('SparkPostEmail\Mailer\Exception\MissingCredentialsException');
+        $this->SparkPostTransport->config($this->invalidConfig);
+
+        $email = new Email();
+        $email->transport($this->SparkPostTransport);
+        $email->from(['support@sparkpostbox.com' => 'CakePHP SparkPost'])
+                ->to('test@sparkpostbox.com')
+                ->subject('This is test subject')
+                ->emailFormat('text')
+                ->send('Testing Maingun');
+    }
+
+    /**
+     * Test required fields
+     *
+     * @return void
+     */
+    public function testMissingRequiredFields()
+    {
+        $this->setExpectedException('BadMethodCallException');
+        $this->SparkPostTransport->config($this->validConfig);
+
+        $email = new Email();
+        $email->transport($this->SparkPostTransport);
+        $email->to('test@sparkpostbox.com')
+                ->subject('This is test subject')
+                ->emailFormat('text')
+                ->send('Testing Maingun');
     }
 }
